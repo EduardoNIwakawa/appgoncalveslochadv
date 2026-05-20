@@ -11,9 +11,6 @@ class HeaderController {
         this.progressFill = DOM.query('.progress-fill');
         if (!this.header) return;
 
-        this.logoImg = DOM.query('.logo-img');
-        this.logoDefault = 'assets/images/logo-approved.png';
-        this.logoScrolled = 'assets/images/logo-approved-blank.png';
         this.scrollThreshold = 80;
         this.init();
     }
@@ -38,17 +35,9 @@ class HeaderController {
         if (scrollY > this.scrollThreshold) {
             DOM.removeClass(this.header, 'header-transparent');
             DOM.addClass(this.header, 'header-scrolled');
-            this.setLogo(this.logoScrolled);
         } else {
             DOM.addClass(this.header, 'header-transparent');
             DOM.removeClass(this.header, 'header-scrolled');
-            this.setLogo(this.logoDefault);
-        }
-    }
-
-    setLogo(src) {
-        if (this.logoImg && this.logoImg.src && !this.logoImg.src.endsWith(src.split('/').pop())) {
-            this.logoImg.src = src;
         }
     }
 }
@@ -393,6 +382,20 @@ document.addEventListener('DOMContentLoaded', () => {
     new ThemeToggle();
     new LazyImageLoader();
 
+    // ── Flip Cards "Quem Somos" ──
+    const flipCards = document.querySelectorAll('.flip-card');
+    flipCards.forEach(card => {
+        card.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                card.classList.toggle('flipped');
+            }
+        });
+    });
+
     // Track page view
     Analytics.trackPageView();
 
@@ -427,29 +430,6 @@ document.addEventListener('DOMContentLoaded', () => {
         Logger.log('Sticky CTA mobile inicializado');
     }
 
-    // ===== LAZY LOAD FORM HANDLER =====
-    const contactSection = DOM.query('#contato');
-    if (contactSection) {
-        let formHandlerLoaded = false;
-        
-        const observerForm = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !formHandlerLoaded) {
-                    // Contact section entered viewport, load form handler
-                    const script = document.createElement('script');
-                    script.src = 'js/form-handler.js';
-                    script.async = true;
-                    document.body.appendChild(script);
-                    formHandlerLoaded = true;
-                    Logger.log('Form handler carregado dinamicamente');
-                    observerForm.unobserve(contactSection);
-                }
-            });
-        }, { threshold: 0.1 });
-        
-        observerForm.observe(contactSection);
-        Logger.log('Lazy loading de form handler inicializado');
-    }
 
     if (!Logger.isProduction()) {
         console.log('%c Gonçalves & Loch - Advocacia Especializada', 'color: #0B3D91; font-size: 16px; font-weight: bold;');
