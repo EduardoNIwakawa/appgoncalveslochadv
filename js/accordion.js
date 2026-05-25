@@ -59,9 +59,9 @@ class Accordion {
         }
 
         DOM.addClass(item, 'open');
-        const header = item.querySelector('.accordion-header');
-        if (header) {
-            header.setAttribute('aria-expanded', 'true');
+        const trigger = item.querySelector('.accordion-trigger');
+        if (trigger) {
+            trigger.setAttribute('aria-expanded', 'true');
         }
 
         Logger.log('Accordion item aberto');
@@ -69,9 +69,9 @@ class Accordion {
 
     closeItem(item) {
         DOM.removeClass(item, 'open');
-        const header = item.querySelector('.accordion-header');
-        if (header) {
-            header.setAttribute('aria-expanded', 'false');
+        const trigger = item.querySelector('.accordion-trigger');
+        if (trigger) {
+            trigger.setAttribute('aria-expanded', 'false');
         }
 
         Logger.log('Accordion item fechado');
