@@ -314,9 +314,9 @@
     grid-template-columns: 1fr;
   }
 
-  /* 4 columns */
+  /* 4 columns — single col mobile, 2 cols 480px+ */
   .bento-4 {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   /* Contact */
@@ -326,9 +326,9 @@
     gap: var(--space-md);
   }
 
-  /* Trust grid */
+  /* Trust grid — single col mobile, 2 cols 480px+ */
   .trust-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   /* Footer */
@@ -1271,6 +1271,10 @@
     transition: max-height var(--duration-slow) var(--ease-out);
   }
 
+  .accordion-item.open .accordion-panel {
+    max-height: 500px;
+  }
+
   .accordion-panel p {
     padding: 0 var(--space-lg) var(--space-lg);
     font-size: var(--text-sm);
@@ -1965,9 +1969,54 @@
    RESPONSIVE — Mobile-first breakpoints
    ============================================================ */
 
+/* ── 479px max (mobile) ── */
+@media (max-width: 479px) {
+  :root {
+    --header-height: 80px;
+  }
+
+  .logo-img {
+    height: 80px;
+    width: 80px;
+  }
+
+  .logo-link {
+    padding: 6px 10px;
+  }
+
+  .header-scrolled .logo-link {
+    padding: 4px 8px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.75rem, 1.2rem + 3vw, 2.2rem);
+  }
+
+  .hero-main {
+    padding: var(--space-lg);
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-buttons .btn {
+    width: 100%;
+  }
+
+  .bento-card {
+    padding: var(--space-md);
+  }
+}
+
 /* ── 480px ── */
 @media (min-width: 480px) {
   .bento-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .trust-grid {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -2155,6 +2204,17 @@
 
   .sobre-carousel-prev { left: 10px; }
   .sobre-carousel-next { right: 10px; }
+
+  /* Previne zoom indesejado no iOS ao focar inputs */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="date"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
 }
 
 /* ── Reduced motion ── */
