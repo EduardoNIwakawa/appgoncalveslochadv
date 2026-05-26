@@ -396,6 +396,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ── Bento Hero Flip Cards ──
+    (function () {
+        const bentoFlipCards = document.querySelectorAll('.bento-flip-card');
+
+        bentoFlipCards.forEach(function (card) {
+            // Clique
+            card.addEventListener('click', function () {
+                this.classList.toggle('is-flipped');
+            });
+
+            // Teclado (Enter ou Space)
+            card.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.classList.toggle('is-flipped');
+                }
+            });
+        });
+    })();
+
     // Track page view
     Analytics.trackPageView();
 
@@ -428,6 +448,60 @@ document.addEventListener('DOMContentLoaded', () => {
         
         observerCTA.observe(hero);
         Logger.log('Sticky CTA mobile inicializado');
+
+    // ===== LEGAL MODAL CONTROLLER =====
+    const legalModals = DOM.query('#legalModals');
+    const legalLinks = DOM.queryAll('a[href="#privacidade"], a[href="#termos"], a[href="#disclaimer"]');
+    
+    if (legalModals && legalLinks.length > 0) {
+        const allSections = DOM.queryAll('.legal-section');
+
+        const closeLegalModal = () => {
+            legalModals.setAttribute('hidden', '');
+            allSections.forEach(section => section.classList.remove('active'));
+        };
+
+        // Handle legal links click
+        legalLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                legalModals.removeAttribute('hidden');
+
+                const sectionId = link.getAttribute('href').substring(1);
+                allSections.forEach(section => section.classList.remove('active'));
+
+                const section = DOM.query(`#${sectionId}`);
+                if (section) {
+                    section.classList.add('active');
+                    setTimeout(() => {
+                        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
+            });
+        });
+        
+        // Handle modal close via click on overlay
+        legalModals.addEventListener('click', (e) => {
+            if (e.target === legalModals) {
+                closeLegalModal();
+            }
+        });
+        
+        // Handle modal close via close buttons
+        const closeButtons = DOM.queryAll('.legal-section-close');
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', closeLegalModal);
+        });
+        
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !legalModals.hasAttribute('hidden')) {
+                closeLegalModal();
+            }
+        });
+        
+        Logger.log('Legal modal controller inicializado');
+    }
     }
 
 

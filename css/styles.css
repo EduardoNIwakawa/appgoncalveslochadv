@@ -1408,6 +1408,7 @@
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: var(--space-xs);
     font-size: var(--text-xs);
     opacity: 0.5;
@@ -1744,6 +1745,96 @@
     margin-top: var(--space-sm);
   }
 
+  /* ── Bento Hero Flip Cards ── */
+  .bento-flip-card {
+    perspective: 1000px;
+    cursor: pointer;
+    /* Mantém todas as propriedades visuais do .bento-card.hero-stat.glass intactas */
+    background: transparent !important;
+    padding: 0 !important;
+    overflow: hidden;
+  }
+
+  .bento-flip-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 180px;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+    border-radius: inherit;
+  }
+
+  .bento-flip-card.is-flipped .bento-flip-inner {
+    transform: rotateY(180deg);
+  }
+
+  .bento-flip-front,
+  .bento-flip-back {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem 1rem;
+    border-radius: inherit;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+  }
+
+  .bento-flip-back {
+    transform: rotateY(180deg);
+    justify-content: flex-start;
+    padding: 2rem 1.5rem;
+  }
+
+  .bento-flip-back-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #ffffff;
+    margin: 0 0 auto 0;
+    text-align: left;
+  }
+
+  .bento-flip-hint {
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    opacity: 1;
+    margin-top: auto;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .bento-flip-hint::after {
+    content: '↻';
+    font-size: 0.85rem;
+    transition: transform 0.3s ease;
+  }
+
+  .bento-flip-card:hover .bento-flip-hint::after {
+    transform: rotate(180deg);
+  }
+
+  /* Acessibilidade: foco via teclado */
+  .bento-flip-card:focus-visible {
+    outline: 2px solid var(--color-primary, #6366f1);
+    outline-offset: 3px;
+    border-radius: var(--radius-md, 12px);
+  }
+
   /* ==========================================================
      STICKY MOBILE CTA
      ========================================================== */
@@ -1770,31 +1861,103 @@
   }
 
   /* ==========================================================
-     LEGAL SECTIONS (hidden modals)
+     LEGAL SECTIONS (modal overlay)
      ========================================================== */
 
+  #legalModals {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: var(--z-modal);
+    overflow-y: auto;
+    padding: 2rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
   #legalModals[hidden] {
-    display: none;
+    display: none !important;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   .legal-section {
-    padding-block: var(--space-3xl);
+    position: relative;
+    display: none;
+    background: rgba(6, 10, 24, 0.96);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    max-width: 700px;
+    width: 100%;
+    margin-top: 2rem;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .legal-section.active {
+    display: block;
+  }
+
+  .legal-section-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #fff;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+
+  .legal-section-close:hover {
+    opacity: 1;
   }
 
   .legal-section h2 {
     font-size: var(--text-2xl);
     margin-bottom: var(--space-lg);
+    margin-top: 0;
+    color: #fff;
   }
 
   .legal-section h3 {
     font-size: var(--text-lg);
     margin-top: var(--space-lg);
     margin-bottom: var(--space-sm);
+    color: #fff;
   }
 
   .legal-section p {
     font-size: var(--text-sm);
-    color: var(--color-text-secondary);
+    color: rgba(255, 255, 255, 0.8);
     line-height: 1.8;
   }
 }
@@ -2123,8 +2286,8 @@
 
   .footer-bottom {
     flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
+    justify-content: center;
+    text-align: center;
   }
 
   .sticky-cta {
