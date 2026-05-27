@@ -1791,18 +1791,69 @@
     text-align: center;
   }
 
+  /* ── Bento Flip: verso corrigido ── */
   .bento-flip-back {
-    transform: rotateY(180deg);
-    justify-content: flex-start;
-    padding: 2rem 1.5rem;
+      transform: rotateY(180deg);
+      justify-content: flex-start;   /* ← correção principal: elimina o vazio central */
+      align-items: flex-start;
+      padding: 0.85rem 0.9rem 0.7rem;
+      gap: 0;
+      text-align: left;
   }
 
+  /* Mini-header: ícone + título contextual */
+  .bento-flip-back-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      width: 100%;
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(var(--color-primary-rgb, 99, 102, 241), 0.22);
+  }
+
+  .bento-flip-back-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      background: rgba(200, 150, 46, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 12px;
+      color: var(--color-accent, #d4af37);
+  }
+
+  .bento-flip-back-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+  }
+
+  /* Texto descritivo */
   .bento-flip-back-text {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: #ffffff;
-    margin: 0 0 auto 0;
-    text-align: left;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.8);
+      margin: 0;
+      flex: 1;
+  }
+
+  /* Hint de retorno */
+  .bento-flip-return {
+      display: block;
+      width: 100%;
+      font-size: 9px;
+      color: #ffffff;
+      font-weight: 700;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 6px;
+      text-align: right;
   }
 
   .bento-flip-hint {
